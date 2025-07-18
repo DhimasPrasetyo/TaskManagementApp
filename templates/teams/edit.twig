@@ -1,0 +1,47 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow-sm">
+        <h4 class="mb-4">
+            {{ team is defined ? '✏️ Edit Team' : '➕ Create New Team' }}
+        </h4>
+
+        <form method="POST" 
+              action="{{ team is defined ? '/teams/edit/' ~ team.id : '/teams/create' }}" 
+              enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label class="form-label">Team Name</label>
+                <input type="text" name="name" class="form-control" 
+                       value="{{ team.name ?? '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="4">{{ team.description ?? '' }}</textarea>
+            </div>
+
+            {# Optional: Logo Upload (only used if you're handling photo uploads) #}
+            {% if team is defined %}
+            <div class="mb-3">
+                <label class="form-label">Logo / Photo (optional)</label>
+                <input type="file" name="photo" class="form-control">
+
+                {% if team.photo is defined and team.photo %}
+                    <div class="mt-2">
+                        <img src="/uploads/{{ team.photo }}" width="100" class="img-thumbnail">
+                        <small class="text-muted d-block">Current logo</small>
+                    </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between">
+                <a href="/teams" class="btn btn-secondary">← Cancel</a>
+                <button type="submit" class="btn btn-success">💾 Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

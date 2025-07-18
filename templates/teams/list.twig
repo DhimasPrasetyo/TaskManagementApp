@@ -1,0 +1,46 @@
+{% extends "layout.twig" %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="mb-4">📂 Daftar Tim</h3>
+    <a href="/teams/create" class="btn btn-primary mb-3">+ Tambah Tim</a>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Foto</th>
+                <th>Nama Tim</th>
+                <th>Deskripsi</th>
+                <th>Dibuat</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    {% if team.photo %}
+                        <img src="/uploads/{{ team.photo }}" width="70" class="img-thumbnail" alt="Foto Tim">
+                    {% else %}
+                        <span class="text-muted">Tidak ada</span>
+                    {% endif %}
+                </td>
+                <td>{{ team.name }}</td>
+                <td>{{ team.description }}</td>
+                <td>{{ team.created_at }}</td>
+                <td>
+                    <a href="/teams/edit/{{ team.id }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+                    <a href="/teams/delete/{{ team.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">🗑️ Hapus</a>
+                    <a href="/teams/{{ team.id }}/members" class="btn btn-info btn-sm">👥 Anggota</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">Belum ada data tim.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
